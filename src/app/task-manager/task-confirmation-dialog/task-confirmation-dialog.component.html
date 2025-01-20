@@ -1,0 +1,10 @@
+<ng-container class="task-confirmation-dialog-container">
+    <ng-container *ngIf="data.action === 'Delete'">
+        <h1>{{data.header + " Task"}}</h1>
+        <h2>{{data.content}}</h2>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button class="bg-accent text-primary mr-3" (click)="No()">{{data.cancelButton}}</button>
+            <button mat-raised-button color="primary" (click)="Yes()">{{data.confirmButton}}</button>
+        </div>
+    <ng-container>
+</ng-container>

@@ -1,0 +1,88 @@
+<div class="deep-purple-theme">
+  <div class="task-add-form-container" fxLayout="row" fxLayoutAlign="center center" [ngStyle]="{'min-height':'100vh'}">
+    <mat-card [ngStyle]="{'border-top':'5px solid #673AB7'}">
+      <mat-card-title class="ml-4"><h1>Edit Task</h1></mat-card-title>
+      <mat-card-subtitle class="mt-4 ml-4">Edit the task details</mat-card-subtitle>
+      <mat-stepper linear="true" #stepper>
+        <!-- Task Information Step -->
+        <mat-step [stepControl]="taskManagerFormGroup" label="Fill out task fields" errorMessage="Task is required.">
+          <form [formGroup]="taskManagerFormGroup">
+            <!-- Entity Name -->
+            <div class="mt-3">
+              <mat-form-field class="input-full-width" appearance="outline">
+                <mat-label>Entity Name</mat-label>
+                <input matInput formControlName="entityName" placeholder="Entity Name">
+                <mat-error *ngIf="taskManagerFormGroup.controls['entityName'].hasError('required')">Entity name is required.</mat-error>
+              </mat-form-field>
+            </div>
+            
+            <!-- Task Type -->
+            <div class="mt-3">
+              <mat-form-field class="input-full-width" appearance="outline">
+                <mat-label>Task Type</mat-label>
+                <input matInput formControlName="taskType" placeholder="Task Type">
+                <mat-error *ngIf="taskManagerFormGroup.controls['taskType'].hasError('required')">Task type is required.</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Contact Person -->
+            <div class="mt-3">
+              <mat-form-field class="input-full-width" appearance="outline">
+                <mat-label>Contact Person</mat-label>
+                <input matInput formControlName="contactPerson" placeholder="Contact Person">
+                <mat-error *ngIf="taskManagerFormGroup.controls['contactPerson'].hasError('required')">Contact person is required.</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Time of Task -->
+            <div class="mt-3">
+              <mat-form-field class="input-full-width" appearance="outline">
+                <mat-label>Time of Task</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="timeOfTask" placeholder="Select Date and Time" readonly>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="taskManagerFormGroup.controls['timeOfTask'].hasError('required')">Time of task is required.</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Note -->
+            <div class="mt-3">
+              <mat-form-field class="input-full-width" appearance="outline">
+                <mat-label>Note (Optional)</mat-label>
+                <textarea matInput formControlName="note" placeholder="Add an optional note"></textarea>
+              </mat-form-field>
+            </div>
+
+            <!-- Status -->
+            <div class="mt-3">
+              <mat-form-field class="input-full-width" appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status">
+                  <mat-option value="open">Open</mat-option>
+                  <mat-option value="closed">Closed</mat-option>
+                </mat-select>
+                <mat-error *ngIf="taskManagerFormGroup.controls['status'].hasError('required')">Status is required.</mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Buttons: Back & Next -->
+            <div class="mt-3" fxLayout="row" fxLayoutAlign="end">
+              <button mat-raised-button color="accent" class="bg-accent text-primary mx-3" (click)="onBack()">Back</button>
+              <button mat-raised-button color="primary" matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Confirmation Step -->
+        <mat-step label="Complete">
+          <h3>You are now done filling out the task fields. Do you wish to save?</h3>
+          <div class="mt-3" fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button class="bg-light text-primary" matStepperPrevious>Back</button>
+            <button mat-raised-button color="accent" class="bg-accent text-primary mx-3" (click)="onBack()">No</button>
+            <button mat-raised-button color="primary" (click)="save()">Yes</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+    </mat-card>
+  </div>
+</div>

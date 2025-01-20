@@ -1,0 +1,112 @@
+<div class="container">
+    <div class="mt-5" fxLayout="row" fxLayoutAlign="space-between">
+        <h1 class="text-primary" style="font-weight: bold;">Tasks Manager</h1>
+        <div class="ms-auto">
+            <mat-form-field appearance="legacy" class="mx-4">
+                <mat-label>Search</mat-label>
+                <input 
+                    matInput 
+                    [(ngModel)]="searchKey" 
+                    placeholder="Search..." 
+                    (input)="onSearchKeyChange()"
+                >
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="onAdd()" matTooltip="Create Task">
+                <mat-icon>add_circle</mat-icon> Create Task
+            </button>
+        </div>
+    </div>
+
+    <div class="mat-elevation-z8 p-2">
+        <table mat-table [dataSource]="dataSource">
+
+            <!-- Entity Name Column -->
+            <ng-container matColumnDef="entityName">
+                <th mat-header-cell *matHeaderCellDef> Entity Name </th>
+                <td mat-cell *matCellDef="let task"> {{task.entityName}} </td>
+            </ng-container>
+
+            <!-- Task Type Column -->
+            <ng-container matColumnDef="taskType">
+                <th mat-header-cell *matHeaderCellDef> Task Type </th>
+                <td mat-cell *matCellDef="let task"> {{task.taskType}} </td>
+            </ng-container>
+
+            <!-- Date Created Column -->
+            <ng-container matColumnDef="dateCreated">
+                <th mat-header-cell *matHeaderCellDef> Date Created 
+                       <button mat-icon-button (click)="sortByDate()" matTooltip="Sort by Date">
+                        <mat-icon>{{ sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+                    </button>
+                </th>
+                <td mat-cell *matCellDef="let task"> {{task.dateCreated | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+
+            <!-- Time of Task Column -->
+            <ng-container matColumnDef="timeOfTask">
+                <th mat-header-cell *matHeaderCellDef>
+                    Deadline of Task
+                    <button mat-icon-button (click)="sortByDate()" matTooltip="Sort by Date">
+                        <mat-icon>{{ sortOrder === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+                    </button>
+                </th>
+                <td mat-cell *matCellDef="let task"> {{task.timeOfTask | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+
+
+            <!-- Contact Person Column -->
+            <ng-container matColumnDef="contactPerson">
+                <th mat-header-cell *matHeaderCellDef> Contact Person </th>
+                <td mat-cell *matCellDef="let task"> {{task.contactPerson}} </td>
+            </ng-container>
+
+            <!-- Note Column -->
+            <ng-container matColumnDef="note">
+                <th mat-header-cell *matHeaderCellDef> Note </th>
+                <td mat-cell *matCellDef="let task"> {{task.note || 'No Note'}} </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let task" [ngStyle]="{'text-align':'center','margin':'5px'}">
+                    <div *ngIf="task.status === 'open'" matTooltip="Open" aria-label="open">
+                        <mat-icon [ngStyle]="{'color':'blue'}">new_releases</mat-icon>
+                    </div>
+                    <div *ngIf="task.status === 'closed'" matTooltip="Closed" aria-label="closed">
+                        <mat-icon [ngStyle]="{'color':'green'}">check_circle</mat-icon>
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let task">
+                    <button mat-icon-button color="accent" class="bg-accent text-primary mx-2" matTooltip="Edit Task"
+                        (click)="onEdit(task.taskId)" aria-label="edit">
+                        <mat-icon>mode_edit</mat-icon>
+                    </button>
+                    <button mat-icon-button  color="warn" class="bg-accent"
+                        matTooltip="Delete Task" (click)="openDialogConfirmation(task.taskId)" aria-label="delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <!-- Table Rows -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+            <!-- No Data Found Row -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="7" [ngStyle]="{'text-align':'center'}">No data found</td>
+            </tr>
+        </table>
+
+        <!-- Pagination -->
+        <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
+            aria-label="Select page of tasks"></mat-paginator>
+    </div>
+</div>

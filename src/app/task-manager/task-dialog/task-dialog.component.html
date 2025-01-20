@@ -1,0 +1,46 @@
+<div class="task-dialog-container">
+    <h1 mat-dialog-title>{{data.header}} Task</h1>
+    <mat-dialog-content>
+        <mat-stepper linear="true" #stepper>
+            <mat-step [stepControl]="taskManagerFormGroup" label="Fillout task fields" errorMessage="Task is required.">
+                <form [formGroup]="taskManagerFormGroup">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20">
+                    <mat-form-field class="input-full-width" appearance="legacy">
+                        <mat-label>Task Name</mat-label>
+                        <input matInput formControlName="taskName" placeholder="Task Name">
+                        <mat-error *ngIf="taskManagerFormGroup.controls['taskName'].hasError">Task name is required.</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="legacy" *ngIf="data.header ==='Edit'">
+                        <mat-label>Status</mat-label>
+                        <mat-select formControlName="status">
+                            <mat-option value=0>New</mat-option>
+                            <mat-option value=1>In Progress</mat-option>
+                            <mat-option value=2>Completed</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="taskManagerFormGroup.controls['status'].hasError">Task status is required.</mat-error>
+                    </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign=" none" >
+                        <mat-form-field class="input-full-width" appearance="legacy">
+                            <mat-label>Task Description</mat-label>
+                            <textarea matInput formControlName="taskDescription" placeholder="Task Description"></textarea>
+                            <mat-error *ngIf="taskManagerFormGroup.controls['taskDescription'].hasError">Task description is required.</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <button mat-button matStepperNext [disabled]="taskManagerFormGroup.invalid">Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step label="Done">
+                <p>You are now done. Do you wish to save?</p>
+                <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button (click)="cancel()">No</button>
+                    <button mat-button *ngIf="data.header === 'Add'" (click)="save(data.header)">Yes</button>
+                    <button mat-button *ngIf="data.header === 'Edit'" (click)="save(data.header, data.task.taskId)">Yes</button>
+                </div>
+            </mat-step>
+        </mat-stepper>
+    </mat-dialog-content>
+</div>
